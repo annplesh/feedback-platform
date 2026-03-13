@@ -1,0 +1,90 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Base ──────────────────────────────────────────────── */
+body {
+  font-family: "Outfit", sans-serif;
+  background-color: #f7f4ef;
+  color: #1a1714;
+}
+
+h1,
+h2,
+h3,
+.font-display {
+  font-family: "Cormorant Garamond", serif;
+}
+
+/* ── Page transition ───────────────────────────────────── */
+.page-enter {
+  animation: pageIn 0.35s ease both;
+}
+
+@keyframes pageIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Staggered card reveal ─────────────────────────────── */
+.card-reveal {
+  animation: cardIn 0.4s ease both;
+}
+
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ── Star hover ────────────────────────────────────────── */
+.star-interactive {
+  transition:
+    transform 0.12s ease,
+    color 0.12s ease;
+  cursor: pointer;
+}
+.star-interactive:hover {
+  transform: scale(1.25);
+}
+
+/* ── Card hover ────────────────────────────────────────── */
+.feedback-card {
+  transition:
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
+}
+.feedback-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(26, 23, 20, 0.08);
+}
+
+/* ── Input focus ring ──────────────────────────────────── */
+.field-input:focus {
+  outline: none;
+  border-color: #c0392b;
+  box-shadow: 0 0 0 3px rgba(192, 57, 43, 0.12);
+}
+
+/* ── Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #ede9e1;
+}
+::-webkit-scrollbar-thumb {
+  background: #c5bfb8;
+  border-radius: 3px;
+}
