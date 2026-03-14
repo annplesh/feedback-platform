@@ -38,7 +38,7 @@ function calcAverage(items) {
   );
 }
 
-export default function WallPage({ items }) {
+export default function WallPage({ items, onLeaveReview }) {
   const [sort, setSort] = useState("newest");
 
   const sorted = sortItems(items, sort);
@@ -62,12 +62,10 @@ export default function WallPage({ items }) {
               <p className="text-3xl font-semibold text-ink">{items.length}</p>
               <p className="text-xs text-muted mt-0.5">reviews</p>
             </div>
-            <div className="w-px h-10 bg-cream" />
             <div>
               <p className="text-3xl font-semibold text-ink">{average}</p>
-              <p className="text-xs text-muted mt-0.5">avg rating</p>
+              <p className="text-xs text-muted mt-0.5">average</p>
             </div>
-            <div className="w-px h-10 bg-cream" />
             <div>
               <StarRating value={roundedAvg} size="sm" />
               <p className="text-xs text-muted mt-1">overall</p>
@@ -78,16 +76,18 @@ export default function WallPage({ items }) {
 
       {/* Sort controls */}
       {items.length > 0 && (
-        <div className="flex flex-wrap items-center gap-2 mb-8">
+        <div className="flex flex-wrap items-center gap-1 mb-8">
           <span className="text-xs text-muted font-medium mr-1">Sort by:</span>
+
           {SORT_OPTIONS.map((opt) => (
             <button
               key={opt.value}
               onClick={() => setSort(opt.value)}
               className={[
                 "px-3 py-1.5 rounded-full text-xs font-medium border transition-colors",
+                "focus:outline-none focus:ring-0",
                 sort === opt.value
-                  ? "bg-ink text-paper border-ink"
+                  ? "bg-cream text-ink border-cream"
                   : "bg-white text-muted border-cream hover:border-ink hover:text-ink",
               ].join(" ")}
             >
@@ -103,6 +103,14 @@ export default function WallPage({ items }) {
           <p className="text-4xl mb-4">💬</p>
           <p className="font-medium text-ink">No reviews yet</p>
           <p className="text-sm mt-1">Be the first to share your experience.</p>
+          {onLeaveReview && (
+            <button
+              onClick={onLeaveReview}
+              className="mt-4 px-4 py-2 rounded-full bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors"
+            >
+              Leave a Review
+            </button>
+          )}
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">

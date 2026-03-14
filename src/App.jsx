@@ -17,7 +17,12 @@ export default function App() {
 
       {page === "submit" && <SubmitPage onSubmit={submitFeedback} />}
 
-      {page === "wall" && <WallPage items={approvedItems} />}
+      {page === "wall" && (
+        <WallPage
+          items={approvedItems}
+          onLeaveReview={() => setPage("submit")}
+        />
+      )}
 
       <footer className="border-t border-cream py-8 text-center text-xs text-muted mt-10">
         © 2024 FeedbackHub · Frontend portfolio project

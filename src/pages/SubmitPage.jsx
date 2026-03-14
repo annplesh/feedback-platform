@@ -11,6 +11,16 @@ import StarRating from "../components/StarRating";
 
 const MAX_MESSAGE = 300;
 
+function hasMeaningfulText(value) {
+  const trimmed = value.trim();
+  return trimmed.length >= 2 && /[a-zA-Z]/.test(trimmed);
+}
+
+function hasMeaningfulMessage(value) {
+  const trimmed = value.trim();
+  return trimmed.length >= 10 && /[a-zA-Z]/.test(trimmed);
+}
+
 export default function SubmitPage({ onSubmit }) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -18,24 +28,49 @@ export default function SubmitPage({ onSubmit }) {
   const [errors, setErrors] = useState({});
   const [status, setStatus] = useState("idle"); // 'idle' | 'submitting' | 'success'
 
-  function validate() {
+  function validateAll() {
     const e = {};
     if (!name.trim()) e.name = "Please enter your name.";
-    if (message.trim().length < 10)
-      e.message = "Message must be at least 10 characters.";
+    else if (!hasMeaningfulText(name))
+      e.name = "Please enter a real name with at least 2 letters.";
+
+    if (!message.trim()) e.message = "Please write your message.";
+    else if (!hasMeaningfulMessage(message))
+      e.message = "Message must be at least 10 meaningful characters.";
+
     if (rating === 0) e.rating = "Please select a star rating.";
+
     setErrors(e);
     return Object.keys(e).length === 0;
   }
 
+  function validateField(field) {
+    const nextErrors = { ...errors };
+    if (field === "name") {
+      if (!name.trim()) nextErrors.name = "Please enter your name.";
+      else if (!hasMeaningfulText(name))
+        nextErrors.name = "Please enter a real name with at least 2 letters.";
+      else nextErrors.name = "";
+    }
+    if (field === "message") {
+      if (!message.trim()) nextErrors.message = "Please write your message.";
+      else if (!hasMeaningfulMessage(message))
+        nextErrors.message =
+          "Message must be at least 10 meaningful characters.";
+      else nextErrors.message = "";
+    }
+    setErrors(nextErrors);
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validateAll()) return;
     setStatus("submitting");
     // Simulate async — swap for a real fetch() when backend is ready
     setTimeout(() => {
       onSubmit({ name: name.trim(), message: message.trim(), rating });
       setStatus("success");
+      window.scrollTo({ top: 0, behavior: "smooth" });
     }, 700);
   }
 
@@ -101,9 +136,10 @@ export default function SubmitPage({ onSubmit }) {
             value={name}
             onChange={(e) => {
               setName(e.target.value);
-              setErrors((p) => ({ ...p, name: "" }));
+              if (errors.name) setErrors((p) => ({ ...p, name: "" }));
             }}
-            placeholder="e.g. Jane Doe"
+            onBlur={() => validateField("name")}
+            placeholder="Jane Doe"
             className={[
               "field-input w-full px-4 py-2.5 rounded-lg border text-sm text-ink placeholder-muted bg-paper transition-colors",
               errors.name ? "border-red-400 bg-red-50" : "border-cream",
@@ -131,9 +167,10 @@ export default function SubmitPage({ onSubmit }) {
             onChange={(e) => {
               if (e.target.value.length <= MAX_MESSAGE) {
                 setMessage(e.target.value);
-                setErrors((p) => ({ ...p, message: "" }));
+                if (errors.message) setErrors((p) => ({ ...p, message: "" }));
               }
             }}
+            onBlur={() => validateField("message")}
             placeholder="Tell us what you think…"
             rows={4}
             className={[
@@ -153,7 +190,7 @@ export default function SubmitPage({ onSubmit }) {
             value={rating}
             onChange={(v) => {
               setRating(v);
-              setErrors((p) => ({ ...p, rating: "" }));
+              if (errors.rating) setErrors((p) => ({ ...p, rating: "" }));
             }}
           />
           {errors.rating && (
@@ -164,8 +201,13 @@ export default function SubmitPage({ onSubmit }) {
         {/* Submit button */}
         <button
           type="submit"
-          disabled={status === "submitting"}
-          className="w-full py-3 bg-ink text-paper rounded-lg text-sm font-semibold hover:bg-accent active:scale-95 disabled:opacity-50 transition-all"
+          disabled={
+            status === "submitting" ||
+            !hasMeaningfulText(name) ||
+            !hasMeaningfulMessage(message) ||
+            rating === 0
+          }
+          className="w-full py-3 rounded-lg text-sm font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-ink text-paper hover:bg-accent active:scale-95"
         >
           {status === "submitting" ? "Submitting…" : "Submit Feedback"}
         </button>
