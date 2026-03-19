@@ -165,3 +165,13 @@ new Date(item.date).toLocaleDateString("en-GB", {
   year: "numeric",
 });
 ```
+
+### 8. Data Persistence
+
+The application does not store any data locally.
+
+All feedback entries are persisted in Supabase.
+
+No sessions, cookies, or localStorage are used.
+
+The frontend retrieves data on demand and receives realtime updates through Supabase channels.
