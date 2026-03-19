@@ -53,17 +53,23 @@ export default function WallPage({ items, onLeaveReview }) {
           <p className="text-[11px] uppercase tracking-widest text-accent font-semibold mb-1.5 xs:text-[10px]">
             Community voices
           </p>
-          <h1 className="font-display text-4xl xs:text-3xl text-ink">All Reviews</h1>
+          <h1 className="font-display text-4xl xs:text-3xl text-ink">
+            All Reviews
+          </h1>
         </div>
 
         {items.length > 0 && (
           <div className="flex items-center gap-3 text-center pb-1">
             <div>
-              <p className="text-2xl xs:text-xl font-semibold text-ink">{items.length}</p>
+              <p className="text-2xl xs:text-xl font-semibold text-ink">
+                {items.length}
+              </p>
               <p className="text-xs text-muted mt-0.5">reviews</p>
             </div>
             <div>
-              <p className="text-2xl xs:text-xl font-semibold text-ink">{average}</p>
+              <p className="text-2xl xs:text-xl font-semibold text-ink">
+                {average}
+              </p>
               <p className="text-xs text-muted mt-0.5">average</p>
             </div>
             <div>
@@ -105,7 +111,9 @@ export default function WallPage({ items, onLeaveReview }) {
         <div className="text-center py-14 xs:py-10 text-muted">
           <p className="text-4xl xs:text-3xl mb-3">💬</p>
           <p className="font-medium text-ink">No reviews yet</p>
-          <p className="text-sm xs:text-xs mt-1">Be the first to share your experience.</p>
+          <p className="text-sm xs:text-xs mt-1">
+            Be the first to share your experience.
+          </p>
           {onLeaveReview && (
             <button
               onClick={onLeaveReview}
@@ -116,7 +124,7 @@ export default function WallPage({ items, onLeaveReview }) {
           )}
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {sorted.map((item, index) => (
             <FeedbackCard key={item.id} item={item} index={index} />
           ))}

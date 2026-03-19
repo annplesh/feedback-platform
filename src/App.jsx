@@ -9,7 +9,7 @@ export default function App() {
   const [page, setPage] = useState("submit"); // 'submit' | 'wall'
 
   // All feedback state lives here, passed down as props
-  const { approvedItems, submitFeedback } = useFeedback();
+  const { approvedItems, submitFeedback, loading, error } = useFeedback();
 
   return (
     <div className="min-h-screen bg-paper">
@@ -20,6 +20,7 @@ export default function App() {
       {page === "wall" && (
         <WallPage
           items={approvedItems}
+          loading={loading}
           onLeaveReview={() => setPage("submit")}
         />
       )}

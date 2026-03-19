@@ -1,27 +1,63 @@
-import { useState } from "react";
-import { MOCK_FEEDBACK } from "../data/mockFeedback";
+import { useState, useEffect } from "react";
+import { supabase } from "../supabaseClient";
 
-// Custom hook — owns all feedback state and actions.
-// Consumed in App.jsx and passed down to pages as props.
 export function useFeedback() {
-  const [items, setItems] = useState(MOCK_FEEDBACK);
+  const [approvedItems, setApprovedItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Add a new submission. approved: false means it won't
-  // appear on the public wall until an admin approves it.
-  function submitFeedback({ name, message, rating }) {
-    const newEntry = {
-      id: Date.now(),
-      name,
-      message,
-      rating,
-      date: new Date().toISOString().split("T")[0],
-      approved: false,
+  // Load approved feedback on mount + subscribe to realtime updates
+  useEffect(() => {
+    fetchFeedback();
+
+    const channel = supabase
+      .channel("feedback-changes")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "feedback" },
+        () => fetchFeedback(),
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
     };
-    setItems((prev) => [newEntry, ...prev]);
+  }, []);
+
+  // Fetch approved feedback sorted by date
+  async function fetchFeedback() {
+    setLoading(true);
+
+    const { data, error } = await supabase
+      .from("feedback")
+      .select("*")
+      .eq("approved", true)
+      .order("date", { ascending: false });
+
+    if (error) {
+      setError(error.message);
+    } else {
+      setApprovedItems(data);
+    }
+
+    setLoading(false);
   }
 
-  // Only approved items are shown on the public wall
-  const approvedItems = items.filter((f) => f.approved);
+  // Submit new feedback (auto-approved)
+  async function submitFeedback({ name, message, rating }) {
+    const { error } = await supabase.from("feedback").insert([
+      {
+        name,
+        message,
+        rating,
+        approved: true,
+      },
+    ]);
 
-  return { approvedItems, submitFeedback };
+    if (error) throw new Error(error.message);
+
+    await fetchFeedback();
+  }
+
+  return { approvedItems, submitFeedback, loading, error };
 }
