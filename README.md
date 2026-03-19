@@ -85,3 +85,83 @@ npm run preview
 - No backend or database — all data is hardcoded in `src/data/mockFeedback.js`
 - New submissions are added to state with `approved: false` and do not appear on the public wall
 - To add backend support, replace the `setTimeout` in `SubmitPage.jsx` with a `fetch()` call and wire up `useFeedback.js` to a real API
+
+## Supabase Integration
+
+### 1. Install dependency
+
+```bash
+npm install @supabase/supabase-js
+```
+
+### 2. Environment variables
+
+Create `.env` in project root:
+
+```
+VITE_SUPABASE_URL=your_project_url
+VITE_SUPABASE_ANON_KEY=your_anon_key
+```
+
+> `.env` is listed in `.gitignore` and never committed.
+
+---
+
+### 3. Supabase client
+
+**`src/supabaseClient.js`**
+
+```js
+import { createClient } from "@supabase/supabase-js";
+
+export const supabase = createClient(
+  import.meta.env.VITE_SUPABASE_URL,
+  import.meta.env.VITE_SUPABASE_ANON_KEY,
+);
+```
+
+---
+
+### 4. Data hook — `useFeedback.js`
+
+Replaced mock state with real Supabase queries:
+
+- **Load** — fetches rows where `approved = true`, ordered by `date DESC`
+- **Submit** — inserts new row with `name`, `message`, `rating` and a UTC timestamp (`new Date().toISOString()`)
+- **Realtime** — subscribes to `postgres_changes` on `INSERT` and `UPDATE`; refreshes list automatically when a review is approved
+- **State** — exposes `approvedItems`, `submitFeedback`, `loading`, `error`
+
+---
+
+### 5. Mock data removed
+
+`src/data/mockFeedback.js` deleted.
+`MOCK_FEEDBACK` import removed from `useFeedback.js`.
+
+---
+
+### 6. App.jsx
+
+Destructures `loading` and `error` from `useFeedback`:
+
+```jsx
+const { approvedItems, submitFeedback, loading, error } = useFeedback();
+```
+
+Passes `loading` to `WallPage` as prop.
+
+---
+
+### 7. WallPage + FeedbackCard
+
+**WallPage** — renders a centered spinner while `loading === true`, then displays the sorted grid.
+
+**FeedbackCard** — formats ISO date string to locale-friendly display:
+
+```js
+new Date(item.date).toLocaleDateString("en-GB", {
+  day: "numeric",
+  month: "short",
+  year: "numeric",
+});
+```
