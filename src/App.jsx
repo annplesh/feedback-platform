@@ -120,11 +120,7 @@ export default function App() {
       )}
 
       {page === "admin" && isAdmin && (
-        <AdminPage
-          items={allItems}
-          onApprove={approveFeedback}
-          onDelete={deleteFeedback}
-        />
+        <AdminPage items={allItems} onDelete={deleteFeedback} />
       )}
 
       <footer className="border-t border-cream py-8 text-center text-xs text-muted mt-10">

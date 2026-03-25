@@ -179,7 +179,7 @@ export default function WallPage({
               item={item}
               index={index}
               user={user}
-              isAdmin={isAdmin}
+              isAdmin={false}
               onDelete={handleDelete}
             />
           ))}

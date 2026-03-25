@@ -58,7 +58,7 @@ export default function FeedbackCard({
   if (deleted) {
     return (
       <article
-        className="feedback-card bg-white rounded-xl border border-cream p-3 xs:p-2.5 flex items-center justify-center min-h-[120px]"
+        className="feedback-card bg-white rounded-xl border border-cream p-3 xs:p-2.5 flex items-center justify-center min-h-[120px] h-full"
         style={{ animationDelay: `${index * 60}ms` }}
       >
         <p className="text-sm text-emerald-600 font-medium">✓ Review deleted</p>
@@ -68,7 +68,7 @@ export default function FeedbackCard({
 
   return (
     <article
-      className="feedback-card card-reveal bg-white rounded-xl border border-cream p-3 xs:p-2.5 flex flex-col gap-2.5 xs:gap-2"
+      className="feedback-card card-reveal bg-white rounded-xl border border-cream p-3 xs:p-2.5 flex flex-col gap-2.5 xs:gap-2 h-full"
       style={{ animationDelay: `${index * 60}ms` }}
     >
       {/* Header: avatar + name/date + rating pill */}
