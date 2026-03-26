@@ -60,7 +60,10 @@ export default function App() {
         user={user}
         isAdmin={isAdmin}
         userName={userName}
-        onSignOut={signOut}
+        onSignOut={async () => {
+          await signOut();
+          setPage("wall");
+        }}
         onAdminPage={handleAdminPage}
       />
 
