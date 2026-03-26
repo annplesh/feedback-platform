@@ -35,7 +35,7 @@ export function useFeedback() {
       .channel("feedback-changes")
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "feedback" },
+        { event: "INSERT", schema: "public", table: "feedback" },
         () => fetchFeedback(),
       )
       .subscribe();
@@ -67,8 +67,8 @@ export function useFeedback() {
   }
 
   // Fetch approved feedback sorted by date
-  async function fetchFeedback() {
-    setLoading(true);
+  async function fetchFeedback(showLoading = true) {
+    if (showLoading) setLoading(true);
 
     const { data, error } = await supabase
       .from("feedback")
@@ -82,7 +82,7 @@ export function useFeedback() {
       setApprovedItems(data);
     }
 
-    setLoading(false);
+    if (showLoading) setLoading(false);
   }
 
   // Fetch all feedback for admin
@@ -133,7 +133,7 @@ export function useFeedback() {
     const { error } = await supabase.from("feedback").delete().eq("id", id);
 
     if (error) throw new Error(error.message);
-    await fetchFeedback();
+    await fetchFeedback(false);
     if (isAdmin) await fetchAllFeedback();
   }
 
