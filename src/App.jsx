@@ -21,15 +21,14 @@ export default function App() {
     categories,
     user,
     isAdmin,
+    fetchFeedback,
     submitFeedback,
-    approveFeedback,
     deleteFeedback,
     fetchAllFeedback,
     signUp,
     signIn,
     signOut,
     loading,
-    error,
   } = useFeedback();
 
   async function handleLogin(credentials) {
@@ -65,6 +64,7 @@ export default function App() {
           setPage("wall");
         }}
         onAdminPage={handleAdminPage}
+        onAvatarUpdate={() => fetchFeedback(false)}
       />
 
       {page === "submit" && !user && (

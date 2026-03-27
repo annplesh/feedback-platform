@@ -1,14 +1,17 @@
 import { useState, useRef, useEffect } from "react";
+import AvatarUpload from "./AvatarUpload";
+import { useProfile } from "../hooks/useProfile";
 
 // Navbar — shared top bar for all public pages.
 // Props:
-//   page        {string}   current active page id
-//   setPage     {function} navigate to a page
-//   user        {object}   current user or null
-//   isAdmin     {boolean}  whether current user is admin
-//   userName    {string}   name from first review submission
-//   onSignOut   {function} sign out handler
-//   onAdminPage {function} navigate to admin page
+//   page          {string}   current active page id
+//   setPage       {function} navigate to a page
+//   user          {object}   current user or null
+//   isAdmin       {boolean}  whether current user is admin
+//   userName      {string}   name from first review submission
+//   onSignOut     {function} sign out handler
+//   onAdminPage   {function} navigate to admin page
+//   onAvatarUpdate {function} called after avatar upload to refresh cards
 
 export default function Navbar({
   page,
@@ -18,9 +21,16 @@ export default function Navbar({
   userName,
   onSignOut,
   onAdminPage,
+  onAvatarUpdate,
 }) {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const {
+    avatarUrl,
+    uploading,
+    error: avatarError,
+    uploadAvatar,
+  } = useProfile(user?.id, onAvatarUpdate);
 
   const links = [
     { id: "submit", label: "Leave a Review" },
@@ -52,7 +62,7 @@ export default function Navbar({
               FB
             </span>
           </div>
-          <span className="font-display text-base xs:text-sm text-ink font-semibold leading-none">
+          <span className="font-display text-base xs:text-sm text-ink font-semibold leading-none hidden sm:block">
             FeedbackHub
           </span>
         </button>
@@ -65,7 +75,7 @@ export default function Navbar({
                 <button
                   onClick={() => setPage(link.id)}
                   className={[
-                    "px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs xs:text-[10px] font-medium transition-colors focus:outline-none focus:ring-0",
+                    "px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs xs:text-[10px] font-medium transition-colors focus:outline-none focus:ring-0 whitespace-nowrap",
                     page === link.id
                       ? "bg-ink text-paper"
                       : "text-muted hover:text-ink hover:bg-cream",
@@ -83,7 +93,7 @@ export default function Navbar({
               <button
                 onClick={() => setPage("login")}
                 className={[
-                  "px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs font-medium transition-colors focus:outline-none focus:ring-0",
+                  "px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs font-medium transition-colors focus:outline-none focus:ring-0 whitespace-nowrap",
                   page === "login"
                     ? "bg-ink text-paper"
                     : "text-muted hover:text-ink hover:bg-cream",
@@ -93,20 +103,39 @@ export default function Navbar({
               </button>
             </div>
           ) : (
-            /* Avatar dropdown — authenticated */
-            <div ref={dropdownRef} className="relative ml-2">
+            /* Avatar + dropdown — authenticated */
+            <div
+              ref={dropdownRef}
+              className="relative ml-2 flex items-center gap-1.5 overflow-visible"
+            >
+              {/* Avatar — opens file dialog only */}
+              <div className="relative">
+                <AvatarUpload
+                  avatarUrl={avatarUrl}
+                  initials={
+                    userName
+                      ? userName[0].toUpperCase()
+                      : user.email[0].toUpperCase()
+                  }
+                  uploading={uploading}
+                  onUpload={uploadAvatar}
+                  error={avatarError}
+                  size="sm"
+                />
+                {/* Error message — shown when dropdown is closed */}
+                {avatarError && !dropdownOpen && (
+                  <p className="fixed top-14 right-45 whitespace-nowrap text-[11px] text-red-500 font-medium bg-white border border-red-100 rounded-lg px-2 py-1 shadow-sm z-50">
+                    {avatarError}
+                  </p>
+                )}
+              </div>
+
+              {/* Name + arrow — opens dropdown */}
               <button
                 onClick={() => setDropdownOpen((o) => !o)}
-                className="flex items-center gap-1.5 px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs font-medium text-muted hover:text-ink hover:bg-cream transition-colors focus:outline-none focus:ring-0"
+                className="flex items-center gap-1 px-2 py-1.5 xs:py-0.5 rounded-md text-xs font-medium text-muted hover:text-ink hover:bg-cream transition-colors focus:outline-none focus:ring-0"
               >
-                <div className="w-5 h-5 rounded-full bg-ink flex items-center justify-center">
-                  <span className="text-paper text-[9px] font-semibold">
-                    {userName
-                      ? userName[0].toUpperCase()
-                      : user.email[0].toUpperCase()}
-                  </span>
-                </div>
-                <span className="hidden sm:block">
+                <span className="hidden sm:block whitespace-nowrap">
                   {userName ? `Hi, ${userName.split(" ")[0]}!` : "Account"}
                 </span>
                 <span
@@ -118,7 +147,7 @@ export default function Navbar({
 
               {/* Dropdown menu */}
               {dropdownOpen && (
-                <div className="absolute right-0 mt-1 w-44 bg-white border border-cream rounded-lg shadow-sm overflow-hidden z-50">
+                <div className="absolute right-0 top-full mt-2 w-44 bg-white border border-cream rounded-lg shadow-sm overflow-hidden z-50">
                   {isAdmin && (
                     <button
                       onClick={() => {

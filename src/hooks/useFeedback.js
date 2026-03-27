@@ -45,11 +45,12 @@ export function useFeedback() {
     };
   }, []);
 
-  // Refetch categories when tab becomes active again
+  // Refetch categories and feedback when tab becomes active again
   useEffect(() => {
     function handleVisibilityChange() {
       if (document.visibilityState === "visible") {
         fetchCategories();
+        fetchFeedback(false);
       }
     }
     document.addEventListener("visibilitychange", handleVisibilityChange);
@@ -66,6 +67,31 @@ export function useFeedback() {
     if (data) setCategories(data);
   }
 
+  // Fetch profiles and merge with feedback items
+  async function fetchProfiles(items) {
+    const userIds = [...new Set(items.map((i) => i.user_id).filter(Boolean))];
+    if (!userIds.length) return items;
+
+    try {
+      const { data } = await supabase
+        .from("profiles")
+        .select("id, avatar_url")
+        .in("id", userIds);
+
+      if (!data) return items;
+
+      const profileMap = Object.fromEntries(data.map((p) => [p.id, p]));
+      return items.map((item) => ({
+        ...item,
+        profiles: profileMap[item.user_id] ?? null,
+      }));
+    } catch (err) {
+      // If profiles fetch fails, return items without avatars
+      console.error("Failed to fetch profiles:", err.message);
+      return items;
+    }
+  }
+
   // Fetch approved feedback sorted by date
   async function fetchFeedback(showLoading = true) {
     if (showLoading) setLoading(true);
@@ -79,7 +105,8 @@ export function useFeedback() {
     if (error) {
       setError(error.message);
     } else {
-      setApprovedItems(data);
+      const itemsWithProfiles = await fetchProfiles(data);
+      setApprovedItems(itemsWithProfiles);
     }
 
     if (showLoading) setLoading(false);
@@ -95,7 +122,8 @@ export function useFeedback() {
     if (error) {
       setError(error.message);
     } else {
-      setAllItems(data);
+      const itemsWithProfiles = await fetchProfiles(data);
+      setAllItems(itemsWithProfiles);
     }
   }
 
@@ -164,6 +192,7 @@ export function useFeedback() {
     categories,
     user,
     isAdmin,
+    fetchFeedback,
     submitFeedback,
     approveFeedback,
     deleteFeedback,

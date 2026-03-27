@@ -47,6 +47,7 @@ export default function FeedbackCard({
     AVATAR_COLORS[item.name.charCodeAt(0) % AVATAR_COLORS.length];
   const initials = getInitials(item.name);
   const categoryName = item.categories?.name;
+  const avatarUrl = item.profiles?.avatar_url;
   const canDelete = isAdmin || user?.id === item.user_id;
 
   async function handleDelete() {
@@ -74,11 +75,19 @@ export default function FeedbackCard({
       {/* Header: avatar + name/date + rating pill */}
       <div className="flex items-start justify-between gap-2">
         <div className="flex items-center gap-2">
-          <div
-            className={`w-9 h-9 xs:w-8 xs:h-8 rounded-full flex items-center justify-center text-xs xs:text-[10px] font-semibold shrink-0 ${colorClass}`}
-          >
-            {initials}
-          </div>
+          {avatarUrl ? (
+            <img
+              src={avatarUrl}
+              alt={item.name}
+              className="w-9 h-9 xs:w-8 xs:h-8 rounded-full object-cover shrink-0"
+            />
+          ) : (
+            <div
+              className={`w-9 h-9 xs:w-8 xs:h-8 rounded-full flex items-center justify-center text-xs xs:text-[10px] font-semibold shrink-0 ${colorClass}`}
+            >
+              {initials}
+            </div>
+          )}
           <div>
             <p className="text-sm font-semibold text-ink leading-snug">
               {item.name}
