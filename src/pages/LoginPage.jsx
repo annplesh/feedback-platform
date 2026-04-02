@@ -24,8 +24,8 @@ export default function LoginPage({ onLogin, setPage }) {
     if (!email.trim()) e.email = "Please enter your email.";
     else if (!isValidEmail(email)) e.email = "Please enter a valid email.";
     if (!password.trim()) e.password = "Please enter your password.";
-    else if (password.length < 6)
-      e.password = "Password must be at least 6 characters.";
+    else if (password.length < 8)
+      e.password = "Password must be at least 8 characters.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -108,7 +108,7 @@ export default function LoginPage({ onLogin, setPage }) {
                 setPassword(e.target.value);
                 if (errors.password) setErrors((p) => ({ ...p, password: "" }));
               }}
-              placeholder="••••••"
+              placeholder="••••••••"
               className={[
                 "field-input w-full px-3 py-2 pr-10 rounded-lg border text-sm text-ink placeholder-muted bg-paper transition-colors",
                 errors.password ? "border-red-400 bg-red-50" : "border-cream",

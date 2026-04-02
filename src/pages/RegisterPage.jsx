@@ -11,6 +11,17 @@ function isValidEmail(value) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value.trim());
 }
 
+function checkStrength(pwd) {
+  const rules = [
+    { label: "At least 8 characters", met: pwd.length >= 8 },
+    { label: "One uppercase letter", met: /[A-Z]/.test(pwd) },
+    { label: "One number", met: /[0-9]/.test(pwd) },
+    { label: "One special character", met: /[^A-Za-z0-9]/.test(pwd) },
+  ];
+  const score = rules.filter((r) => r.met).length;
+  return { rules, score };
+}
+
 export default function RegisterPage({ onRegister, setPage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -24,8 +35,8 @@ export default function RegisterPage({ onRegister, setPage }) {
     if (!email.trim()) e.email = "Please enter your email.";
     else if (!isValidEmail(email)) e.email = "Please enter a valid email.";
     if (!password.trim()) e.password = "Please enter your password.";
-    else if (password.length < 6)
-      e.password = "Password must be at least 6 characters.";
+    else if (password.length < 8)
+      e.password = "Password must be at least 8 characters.";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -108,7 +119,7 @@ export default function RegisterPage({ onRegister, setPage }) {
                 setPassword(e.target.value);
                 if (errors.password) setErrors((p) => ({ ...p, password: "" }));
               }}
-              placeholder="••••••"
+              placeholder="••••••••"
               className={[
                 "field-input w-full px-3 py-2 pr-10 rounded-lg border text-sm text-ink placeholder-muted bg-paper transition-colors",
                 errors.password ? "border-red-400 bg-red-50" : "border-cream",
@@ -153,6 +164,60 @@ export default function RegisterPage({ onRegister, setPage }) {
               )}
             </button>
           </div>
+
+          {/* Password strength */}
+          {password.length > 0 &&
+            (() => {
+              const { rules, score } = checkStrength(password);
+              const color =
+                score <= 1
+                  ? "bg-red-400"
+                  : score <= 3
+                    ? "bg-amber-400"
+                    : "bg-emerald-500";
+              const label =
+                score <= 1 ? "Weak" : score <= 3 ? "Medium" : "Strong";
+              const width =
+                score === 1
+                  ? "w-1/4"
+                  : score === 2
+                    ? "w-2/4"
+                    : score === 3
+                      ? "w-3/4"
+                      : "w-full";
+              return (
+                <div className="space-y-2 mt-1">
+                  {/* Bar */}
+                  <div className="flex items-center gap-2">
+                    <div className="flex-1 h-1 bg-cream rounded-full overflow-hidden">
+                      <div
+                        className={`h-full rounded-full transition-all duration-300 ${color} ${width}`}
+                      />
+                    </div>
+                    <span
+                      className={`text-[11px] font-medium ${score <= 1 ? "text-red-400" : score <= 3 ? "text-amber-500" : "text-emerald-500"}`}
+                    >
+                      {label}
+                    </span>
+                  </div>
+                  {/* Checklist — hidden when all requirements met */}
+                  {score < 4 && (
+                    <ul className="space-y-1">
+                      {rules.map((rule) => (
+                        <li
+                          key={rule.label}
+                          className={`flex items-center gap-1.5 text-[11px] ${rule.met ? "text-emerald-600" : "text-muted"}`}
+                        >
+                          <span>{rule.met ? "✓" : "✗"}</span>
+                          {rule.label}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              );
+            })()}
+
           {errors.password && (
             <p className="text-red-500 text-xs">{errors.password}</p>
           )}
