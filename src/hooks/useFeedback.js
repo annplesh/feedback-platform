@@ -38,7 +38,9 @@ export function useFeedback() {
         { event: "INSERT", schema: "public", table: "feedback" },
         () => fetchFeedback(),
       )
-      .subscribe();
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") fetchFeedback(false);
+      });
 
     return () => {
       supabase.removeChannel(channel);
@@ -106,7 +108,11 @@ export function useFeedback() {
       setError(error.message);
     } else {
       const itemsWithProfiles = await fetchProfiles(data);
-      setApprovedItems(itemsWithProfiles);
+      // Silent refetch: don't replace existing data with empty result
+      // (can happen when JWT has expired and token refresh is still in progress)
+      if (showLoading || itemsWithProfiles.length > 0) {
+        setApprovedItems(itemsWithProfiles);
+      }
     }
 
     if (showLoading) setLoading(false);
