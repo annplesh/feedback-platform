@@ -127,7 +127,7 @@ export default function App() {
       )}
 
       <footer className="border-t border-cream py-8 text-center text-xs text-muted mt-10">
-        © 2026 FeedbackHub · Frontend portfolio project
+        © 2026 FeedbackHub · Full‑stack portfolio project
       </footer>
     </div>
   );
