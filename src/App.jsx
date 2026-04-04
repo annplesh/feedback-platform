@@ -6,6 +6,7 @@ import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
 import AdminPage from "./pages/AdminPage";
 import { useFeedback } from "./hooks/useFeedback";
+import BackToTop from "./components/BackToTop";
 
 export default function App() {
   // Simple string-based routing — no router library needed
@@ -135,6 +136,7 @@ export default function App() {
       <footer className="border-t border-cream py-8 text-center text-xs text-muted mt-10">
         © 2026 FeedbackHub · Full‑stack portfolio project
       </footer>
+      <BackToTop />
     </div>
   );
 }
