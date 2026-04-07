@@ -147,12 +147,12 @@ export default function WallPage({
               key={opt.value}
               onClick={() => setSort(opt.value)}
               className={[
-                "px-2.5 py-1 xs:px-2 xs:py-0.5 rounded-full text-[11px] xs:text-[10px] font-medium border transition-colors",
+                "px-2.5 py-1 xs:px-2 xs:py-0.5 rounded-full text-[11px] xs:text-[10px] font-medium border transition-[colors,transform]",
                 "whitespace-normal inline-block max-w-[45%] xs:max-w-[42%] leading-tight",
                 "focus:outline-none focus:ring-0",
                 sort === opt.value
                   ? "bg-cream text-ink border-cream"
-                  : "bg-white text-muted border-cream hover:border-ink hover:text-ink",
+                  : "bg-white text-muted border-cream hover:border-ink hover:text-ink active:border-ink active:text-ink active:scale-95 [touch-action:manipulation]",
               ].join(" ")}
             >
               {opt.label}
@@ -175,7 +175,7 @@ export default function WallPage({
           {onLeaveReview && (
             <button
               onClick={onLeaveReview}
-              className="mt-3 px-4 py-2 rounded-full bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors focus:outline-none focus:ring-0"
+              className="mt-3 px-4 py-2 rounded-full bg-ink text-paper text-sm font-medium hover:bg-accent active:bg-accent/80 active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
             >
               Leave a Review
             </button>
@@ -203,7 +203,7 @@ export default function WallPage({
             <button
               onClick={handleLoadMore}
               disabled={isLoadingMore}
-              className="px-6 py-2.5 rounded-full bg-ink text-paper text-sm font-medium hover:bg-accent transition-colors disabled:opacity-50 focus:outline-none focus:ring-0"
+              className="px-6 py-2.5 rounded-full bg-ink text-paper text-sm font-medium hover:bg-accent active:bg-accent/80 active:scale-95 [touch-action:manipulation] transition-[colors,transform] disabled:opacity-50 focus:outline-none focus:ring-0"
             >
               {isLoadingMore ? "Loading..." : "Load more"}
             </button>

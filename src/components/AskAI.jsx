@@ -65,7 +65,7 @@ export default function AskAI() {
           <button
             key={q}
             onClick={() => handleExampleClick(q)}
-            className="text-[11px] px-2.5 py-1 rounded-full border border-cream text-muted hover:border-ink hover:text-ink transition-colors focus:outline-none focus:ring-0"
+            className="text-[11px] px-2.5 py-1 rounded-full border border-cream text-muted hover:border-ink hover:text-ink active:border-ink active:text-ink active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
           >
             {q}
           </button>
@@ -87,7 +87,7 @@ export default function AskAI() {
         <button
           onClick={handleAsk}
           disabled={loading || !question.trim()}
-          className="px-4 py-2 rounded-lg text-xs font-semibold bg-ink text-paper hover:bg-accent transition-colors disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-0"
+          className="px-4 py-2 rounded-lg text-xs font-semibold bg-ink text-paper hover:bg-accent active:bg-accent/80 active:scale-95 [touch-action:manipulation] transition-[colors,transform] disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-0"
         >
           {loading ? "…" : "Ask"}
         </button>

@@ -5,7 +5,7 @@ export default function BackToTop() {
 
   useEffect(() => {
     function handleScroll() {
-      // Показываем кнопку только если пользователь прокрутил вниз
+      // Show the button only when the user has scrolled down
       setVisible(window.scrollY > 150);
     }
 
@@ -22,8 +22,10 @@ export default function BackToTop() {
         "w-10 h-10 rounded-full bg-ink text-paper text-base",
         "flex items-center justify-center",
         "shadow-md hover:bg-accent",
+        "active:bg-accent/80 active:scale-95",
+        "[touch-action:manipulation]",
         "focus:outline-none focus:ring-0",
-        "transition-all duration-1000 ease-[cubic-bezier(0.33,1,0.68,1)]",
+        "transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.33,1,0.68,1)]",
         visible
           ? "opacity-100 translate-y-0"
           : "opacity-0 translate-y-8 pointer-events-none",

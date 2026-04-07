@@ -55,7 +55,7 @@ export default function Navbar({
         {/* Brand mark */}
         <button
           onClick={() => setPage("wall")}
-          className="flex items-center gap-1.5 xs:gap-1 focus:outline-none focus:ring-0"
+          className="flex items-center gap-1.5 xs:gap-1 [touch-action:manipulation] focus:outline-none focus:ring-0"
           aria-label="Go to home"
         >
           <div className="w-7 h-7 xs:w-6 xs:h-6 bg-ink rounded flex items-center justify-center">
@@ -76,10 +76,10 @@ export default function Navbar({
                 <button
                   onClick={() => setPage(link.id)}
                   className={[
-                    "px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs xs:text-[10px] font-medium transition-colors focus:outline-none focus:ring-0 whitespace-nowrap",
+                    "px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs xs:text-[10px] font-medium [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0 whitespace-nowrap",
                     page === link.id
                       ? "bg-ink text-paper"
-                      : "text-muted hover:text-ink hover:bg-cream",
+                      : "text-muted hover:text-ink hover:bg-cream active:text-ink active:bg-cream active:scale-95",
                   ].join(" ")}
                 >
                   {link.label}
@@ -94,10 +94,10 @@ export default function Navbar({
               <button
                 onClick={() => setPage("login")}
                 className={[
-                  "px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs font-medium transition-colors focus:outline-none focus:ring-0 whitespace-nowrap",
+                  "px-3 py-1.5 xs:px-2 xs:py-0.5 rounded-md text-xs font-medium [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0 whitespace-nowrap",
                   page === "login"
                     ? "bg-ink text-paper"
-                    : "text-muted hover:text-ink hover:bg-cream",
+                    : "text-muted hover:text-ink hover:bg-cream active:text-ink active:bg-cream active:scale-95",
                 ].join(" ")}
               >
                 Sign In
@@ -135,7 +135,7 @@ export default function Navbar({
               {/* Name + arrow — opens dropdown */}
               <button
                 onClick={() => setDropdownOpen((o) => !o)}
-                className="flex items-center gap-1 px-2 py-1.5 xs:py-0.5 rounded-md text-xs font-medium text-muted hover:text-ink hover:bg-cream transition-colors focus:outline-none focus:ring-0"
+                className="flex items-center gap-1 px-2 py-1.5 xs:py-0.5 rounded-md text-xs font-medium text-muted hover:text-ink hover:bg-cream active:text-ink active:bg-cream active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
               >
                 <span className="hidden sm:block whitespace-nowrap">
                   {userName ? `Hi, ${userName.split(" ")[0]}!` : "Account"}
@@ -156,7 +156,7 @@ export default function Navbar({
                         onAdminPage();
                         setDropdownOpen(false);
                       }}
-                      className="w-full text-left px-3 py-2 text-xs text-ink hover:bg-cream transition-colors focus:outline-none focus:ring-0"
+                      className="w-full text-left px-3 py-2 text-xs text-ink hover:bg-cream active:bg-cream transition-colors focus:outline-none focus:ring-0"
                     >
                       Admin Panel
                     </button>
@@ -168,7 +168,7 @@ export default function Navbar({
                       onSignOut();
                       setDropdownOpen(false);
                     }}
-                    className="w-full text-left px-3 py-2 text-xs text-muted hover:bg-cream transition-colors focus:outline-none focus:ring-0 flex items-center gap-2"
+                    className="w-full text-left px-3 py-2 text-xs text-muted hover:bg-cream active:bg-cream transition-colors focus:outline-none focus:ring-0 flex items-center gap-2"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

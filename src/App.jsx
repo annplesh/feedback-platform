@@ -84,13 +84,13 @@ export default function App() {
             <div className="flex gap-3 justify-center">
               <button
                 onClick={() => setPage("login")}
-                className="px-5 py-2 bg-ink text-paper rounded-lg text-sm font-medium hover:bg-accent transition-colors focus:outline-none focus:ring-0"
+                className="px-5 py-2 bg-ink text-paper rounded-lg text-sm font-medium hover:bg-accent active:bg-accent/80 active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
               >
                 Sign In
               </button>
               <button
                 onClick={() => setPage("register")}
-                className="px-5 py-2 border border-cream text-ink rounded-lg text-sm font-medium hover:bg-cream transition-colors focus:outline-none focus:ring-0"
+                className="px-5 py-2 border border-cream text-ink rounded-lg text-sm font-medium hover:bg-cream active:bg-cream active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
               >
                 Sign Up
               </button>

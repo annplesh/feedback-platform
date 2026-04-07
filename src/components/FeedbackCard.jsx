@@ -121,7 +121,7 @@ export default function FeedbackCard({
       {canDelete && onDelete && (
         <button
           onClick={handleDelete}
-          className="self-start text-[11px] text-red-400 hover:text-red-600 transition-colors focus:outline-none focus:ring-0"
+          className="self-start text-[11px] text-red-400 hover:text-red-600 active:text-red-600 active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
         >
           Delete
         </button>

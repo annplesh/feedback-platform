@@ -29,7 +29,7 @@ export default function AvatarUpload({
   return (
     <div className="relative group">
       <label
-        className={`${sizeClass} rounded-full ${avatarUrl ? "bg-transparent" : "bg-ink"} flex items-center justify-center cursor-pointer relative overflow-hidden shrink-0`}
+        className={`${sizeClass} rounded-full ${avatarUrl ? "bg-transparent" : "bg-ink"} flex items-center justify-center cursor-pointer relative overflow-hidden shrink-0 [touch-action:manipulation]`}
       >
         {avatarUrl ? (
           <>
@@ -39,8 +39,8 @@ export default function AvatarUpload({
               className="w-full h-full object-cover rounded-full"
             />
             {/* Hover overlay with camera icon */}
-            <div className="absolute inset-0 bg-black rounded-full opacity-0 group-hover:opacity-40 transition-opacity duration-150 flex items-center justify-center">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+            <div className="absolute inset-0 bg-black rounded-full opacity-0 group-hover:opacity-40 group-active:opacity-40 transition-opacity duration-150 flex items-center justify-center">
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-0 group-hover:opacity-100 group-active:opacity-100 transition-opacity duration-150">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
                 <circle cx="12" cy="13" r="4"/>
               </svg>
@@ -63,7 +63,7 @@ export default function AvatarUpload({
       {avatarUrl && onDelete && (
         <button
           onClick={(e) => { e.preventDefault(); onDelete(); }}
-          className="absolute -top-1 -right-1 w-4 h-4 bg-white border border-cream rounded-full flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 transition-opacity duration-150 z-10 focus:outline-none"
+          className="absolute -top-1 -right-1 w-4 h-4 bg-white border border-cream rounded-full flex items-center justify-center shadow-sm opacity-0 group-hover:opacity-100 active:opacity-100 active:scale-95 [touch-action:manipulation] transition-[opacity,transform] duration-150 z-10 focus:outline-none"
           aria-label="Remove avatar"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round">

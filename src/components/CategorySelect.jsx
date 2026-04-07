@@ -30,7 +30,7 @@ export default function CategorySelect({ categories, value, onChange }) {
       <button
         type="button"
         onClick={() => setOpen((o) => !o)}
-        className="w-full px-3 py-2 rounded-lg border border-cream text-sm xs:text-xs bg-paper transition-colors focus:outline-none focus:ring-0 flex items-center justify-between"
+        className="w-full px-3 py-2 rounded-lg border border-cream text-sm xs:text-xs bg-paper transition-colors [touch-action:manipulation] focus:outline-none focus:ring-0 flex items-center justify-between"
       >
         <span className={selected ? "text-ink" : "text-muted"}>
           {selected ? selected.name : "Select a category…"}
@@ -52,7 +52,7 @@ export default function CategorySelect({ categories, value, onChange }) {
                 onChange("");
                 setOpen(false);
               }}
-              className="w-full text-left px-3 py-2 text-sm xs:text-xs text-muted hover:bg-cream transition-colors focus:outline-none focus:ring-0"
+              className="w-full text-left px-3 py-2 text-sm xs:text-xs text-muted hover:bg-cream active:bg-cream [touch-action:manipulation] transition-colors focus:outline-none focus:ring-0"
             >
               Select a category…
             </button>
@@ -69,7 +69,7 @@ export default function CategorySelect({ categories, value, onChange }) {
                   "w-full text-left px-3 py-2 text-sm xs:text-xs transition-colors focus:outline-none focus:ring-0",
                   value === cat.id
                     ? "bg-cream text-ink font-medium"
-                    : "text-ink hover:bg-cream",
+                    : "text-ink hover:bg-cream active:bg-cream",
                 ].join(" ")}
               >
                 {cat.name}

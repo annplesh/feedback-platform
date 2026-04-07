@@ -61,7 +61,7 @@ export default function AdminPage({ items, onDelete }) {
               </div>
               <button
                 onClick={() => handleDelete(item.id)}
-                className="w-full py-1.5 rounded-lg text-xs font-semibold text-red-500 border border-red-200 hover:bg-red-50 transition-colors focus:outline-none focus:ring-0"
+                className="w-full py-1.5 rounded-lg text-xs font-semibold text-red-500 border border-red-200 hover:bg-red-50 active:bg-red-50 active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
               >
                 Delete
               </button>

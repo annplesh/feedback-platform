@@ -24,7 +24,7 @@ export default function StarRating({ value, onChange, size = "md" }) {
             sizeClass,
             star <= displayValue ? "text-accent" : "text-cream",
             onChange
-              ? "cursor-pointer select-none focus:outline-none focus:ring-0"
+              ? "cursor-pointer select-none [touch-action:manipulation] focus:outline-none focus:ring-0"
               : "",
           ].join(" ")}
           onClick={onChange ? () => onChange(star) : undefined}

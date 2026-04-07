@@ -112,13 +112,13 @@ export default function SubmitPage({ onSubmit, categories = [], onViewAll }) {
           <div className="flex gap-3 justify-center">
             <button
               onClick={handleReset}
-              className="px-5 py-2.5 border border-cream text-ink rounded-lg text-sm font-medium hover:bg-cream transition-colors focus:outline-none focus:ring-0"
+              className="px-5 py-2.5 border border-cream text-ink rounded-lg text-sm font-medium hover:bg-cream active:bg-cream active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
             >
               Submit another
             </button>
             <button
               onClick={onViewAll}
-              className="px-5 py-2.5 bg-ink text-paper rounded-lg text-sm font-medium hover:bg-accent transition-colors focus:outline-none focus:ring-0"
+              className="px-5 py-2.5 bg-ink text-paper rounded-lg text-sm font-medium hover:bg-accent active:bg-accent/80 active:scale-95 [touch-action:manipulation] transition-[colors,transform] focus:outline-none focus:ring-0"
             >
               View all reviews
             </button>
@@ -253,7 +253,7 @@ export default function SubmitPage({ onSubmit, categories = [], onViewAll }) {
             !hasMeaningfulMessage(message) ||
             rating === 0
           }
-          className="w-full py-2 rounded-lg text-xs xs:text-[10px] font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-ink text-paper hover:bg-accent active:scale-95 focus:outline-none focus:ring-0"
+          className="w-full py-2 rounded-lg text-xs xs:text-[10px] font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-ink text-paper hover:bg-accent active:bg-accent/80 active:scale-95 [touch-action:manipulation] focus:outline-none focus:ring-0"
         >
           {status === "submitting" ? "Submitting…" : "Submit Feedback"}
         </button>

@@ -128,7 +128,7 @@ export default function RegisterPage({ onRegister, setPage }) {
             <button
               type="button"
               onClick={() => setShowPassword((v) => !v)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-ink transition-colors focus:outline-none focus:ring-0"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted hover:text-ink active:text-ink [touch-action:manipulation] transition-colors focus:outline-none focus:ring-0"
             >
               {showPassword ? (
                 <svg
@@ -230,7 +230,7 @@ export default function RegisterPage({ onRegister, setPage }) {
         <button
           type="submit"
           disabled={status === "submitting"}
-          className="w-full py-2 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-ink text-paper hover:bg-accent active:scale-95 focus:outline-none focus:ring-0"
+          className="w-full py-2 rounded-lg text-xs font-semibold transition-all disabled:opacity-50 disabled:cursor-not-allowed bg-ink text-paper hover:bg-accent active:bg-accent/80 active:scale-95 [touch-action:manipulation] focus:outline-none focus:ring-0"
         >
           {status === "submitting" ? "Creating account…" : "Sign Up"}
         </button>
@@ -246,7 +246,7 @@ export default function RegisterPage({ onRegister, setPage }) {
         <button
           type="button"
           onClick={handleGoogleSignIn}
-          className="w-full py-2 rounded-lg text-xs font-semibold border border-cream bg-white text-ink hover:bg-cream transition-colors flex items-center justify-center gap-2 focus:outline-none focus:ring-0"
+          className="w-full py-2 rounded-lg text-xs font-semibold border border-cream bg-white text-ink hover:bg-cream active:bg-cream active:scale-95 [touch-action:manipulation] transition-[colors,transform] flex items-center justify-center gap-2 focus:outline-none focus:ring-0"
         >
           <svg width="16" height="16" viewBox="0 0 24 24">
             <path
@@ -275,7 +275,7 @@ export default function RegisterPage({ onRegister, setPage }) {
           <button
             type="button"
             onClick={() => setPage("login")}
-            className="text-ink font-medium hover:text-accent transition-colors focus:outline-none focus:ring-0"
+            className="text-ink font-medium hover:text-accent active:text-accent [touch-action:manipulation] transition-colors focus:outline-none focus:ring-0"
           >
             Sign in
           </button>
