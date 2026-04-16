@@ -110,6 +110,7 @@ export default function App() {
       {page === "wall" && (
         <WallPage
           items={approvedItems}
+          categories={categories}
           loading={loading}
           user={user}
           isAdmin={isAdmin}

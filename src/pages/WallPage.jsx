@@ -46,6 +46,7 @@ function calcAverage(items) {
 
 export default function WallPage({
   items,
+  categories = [],
   loading,
   onLeaveReview,
   user,
@@ -56,6 +57,7 @@ export default function WallPage({
   loadMore,
 }) {
   const [sort, setSort] = useState("newest");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [toast, setToast] = useState("");
   async function handleLoadMore() {
     await loadMore();
@@ -89,6 +91,10 @@ export default function WallPage({
   }
 
   const sorted = sortItems(items, sort);
+  const filtered =
+    categoryFilter === "all"
+      ? sorted
+      : sorted.filter((item) => item.categories?.name === categoryFilter);
   const average = calcAverage(items);
   const roundedAvg = Math.round(average);
 
@@ -161,18 +167,45 @@ export default function WallPage({
         </div>
       )}
 
+      {/* Category filter */}
+      {items.length > 0 && categories.length > 0 && (
+        <div className="flex flex-wrap gap-2 xs:gap-1 mb-6">
+          <span className="w-full text-[11px] xs:text-[10px] text-muted font-medium">
+            Filter by:
+          </span>
+          {[{ id: "all", name: "All" }, ...categories].map((cat) => (
+            <button
+              key={cat.id}
+              onClick={() => setCategoryFilter(cat.id === "all" ? "all" : cat.name)}
+              className={[
+                "px-2.5 py-1 xs:px-2 xs:py-0.5 rounded-full text-[11px] xs:text-[10px] font-medium border transition-[colors,transform]",
+                "whitespace-normal inline-block max-w-[45%] xs:max-w-[42%] leading-tight",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-black/10",
+                categoryFilter === (cat.id === "all" ? "all" : cat.name)
+                  ? "bg-cream text-ink border-cream"
+                  : "bg-white text-muted border-cream hover:bg-black/5 active:bg-black/10 active:scale-95 [touch-action:manipulation]",
+              ].join(" ")}
+            >
+              {cat.name}
+            </button>
+          ))}
+        </div>
+      )}
+
       {/* AI analysis */}
       {items.length > 0 && <AskAI />}
 
       {/* Grid or empty state */}
-      {sorted.length === 0 ? (
+      {filtered.length === 0 ? (
         <div className="text-center py-14 xs:py-10 text-muted">
           <p className="text-4xl xs:text-3xl mb-3">💬</p>
-          <p className="font-medium text-ink">No reviews yet</p>
+          <p className="font-medium text-ink">
+            {categoryFilter === "all" ? "No reviews yet" : "No reviews in this category"}
+          </p>
           <p className="text-sm xs:text-xs mt-1">
             Be the first to share your experience.
           </p>
-          {onLeaveReview && (
+          {onLeaveReview && categoryFilter === "all" && (
             <button
               onClick={onLeaveReview}
               data-testid="leave-review-button"
@@ -184,7 +217,7 @@ export default function WallPage({
         </div>
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {sorted.map((item, index) => (
+          {filtered.map((item, index) => (
             <FeedbackCard
               key={item.id}
               item={item}
@@ -198,7 +231,7 @@ export default function WallPage({
       )}
 
       {/* Load more + Back to top */}
-      {sorted.length > 0 && (
+      {filtered.length > 0 && (
         <div className="flex flex-col items-center gap-3 mt-10">
           {hasMore && (
             <button
