@@ -175,6 +175,20 @@ src/
     ├── LoginPage.jsx
     ├── RegisterPage.jsx
     └── AdminPage.jsx
+
+supabase/
+├── functions/
+│   ├── ask-ai/
+│   │   └── index.ts
+│   └── send-welcome-email/
+│       └── index.ts
+├── admin-role.sql
+├── rls-categories.sql
+├── rls-feedback.sql
+├── rls-profiles.sql
+├── rls-storage.sql
+├── schema-categories.sql
+└── schema-feedback.sql
 ```
 
 ---
