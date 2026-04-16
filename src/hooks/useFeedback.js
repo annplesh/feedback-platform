@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import * as Sentry from "@sentry/react";
 
 const PAGE_SIZE = 9;
 
@@ -94,6 +95,7 @@ export function useFeedback() {
     } catch (err) {
       // If profiles fetch fails, return items without avatars
       console.error("Failed to fetch profiles:", err.message);
+      Sentry.captureException(err);
       return items;
     }
   }
@@ -210,6 +212,7 @@ export function useFeedback() {
       });
     } catch (err) {
       console.error("Welcome email failed:", err.message);
+      Sentry.captureException(err);
     }
   }
 

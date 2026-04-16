@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "../supabaseClient";
+import * as Sentry from "@sentry/react";
 
 // useProfile — manages user avatar upload and profile data.
 //
@@ -86,6 +87,7 @@ export function useProfile(userId, onAvatarUpdate) {
     } catch (err) {
       // Log error but don't block the app
       console.error("Avatar upload failed:", err.message);
+      Sentry.captureException(err);
       setError("Failed to upload avatar. Please try again.");
       setTimeout(() => setError(null), 4000);
     } finally {
@@ -117,6 +119,7 @@ export function useProfile(userId, onAvatarUpdate) {
       if (onAvatarUpdate) onAvatarUpdate();
     } catch (err) {
       console.error("Avatar delete failed:", err.message);
+      Sentry.captureException(err);
       setError("Failed to delete avatar. Please try again.");
       setTimeout(() => setError(null), 4000);
     } finally {

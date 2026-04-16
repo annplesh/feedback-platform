@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import * as Sentry from "@sentry/react";
 import Navbar from "./components/Navbar";
 import SubmitPage from "./pages/SubmitPage";
 import WallPage from "./pages/WallPage";
@@ -35,13 +36,19 @@ export default function App() {
     loadMore,
   } = useFeedback();
 
+  useEffect(() => {
+    if (window.gtag) window.gtag("event", "page_view", { page_path: "/" + page });
+  }, [page]);
+
   async function handleLogin(credentials) {
     await signIn(credentials);
+    if (window.gtag) window.gtag("event", "user_logged_in");
     setPage("wall");
   }
 
   async function handleRegister(credentials) {
     await signUp(credentials);
+    if (window.gtag) window.gtag("event", "user_registered");
     setPage("login");
   }
 
@@ -53,9 +60,11 @@ export default function App() {
   async function handleSubmit(data) {
     await submitFeedback(data);
     if (!userName) setUserName(data.name);
+    if (window.gtag) window.gtag("event", "feedback_submitted");
   }
 
   return (
+    <Sentry.ErrorBoundary fallback={<p className="text-center py-20 text-muted">Something went wrong.</p>}>
     <div className="min-h-screen bg-paper">
       <Navbar
         page={page}
@@ -139,5 +148,6 @@ export default function App() {
       </footer>
       <BackToTop />
     </div>
+    </Sentry.ErrorBoundary>
   );
 }

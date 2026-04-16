@@ -185,6 +185,8 @@ npm install
 cp .env.example .env
 npm run dev
 
+> ⚠️ Never commit `.env` to version control. It is already listed in `.gitignore`. Only `.env.example` (with empty values) should be committed.
+
 ---
 
 ## 📘 Documentation
