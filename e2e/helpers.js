@@ -1,5 +1,4 @@
-// Supabase project ref extracted from VITE_SUPABASE_URL
-const SUPABASE_PROJECT_REF = "nrkqhwqmlcuzhjunlhiq";
+const SUPABASE_PROJECT_REF = "placeholder";
 
 export const FAKE_USER = {
   id: "test-user-id-12345",
@@ -75,6 +74,11 @@ export async function setupBaseMocks(page) {
   await page.route(/functions\/v1\/send-welcome-email/, (route) => {
     route.fulfill({ status: 200, body: "{}" });
   });
+}
+
+// Wait for React to mount before interacting with the page.
+export async function waitForApp(page) {
+  await page.waitForSelector("#root > *");
 }
 
 // Inject a fake Supabase session into localStorage before the page loads.

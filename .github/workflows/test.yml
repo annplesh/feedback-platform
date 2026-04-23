@@ -1,0 +1,66 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install Playwright browsers
+        run: npx playwright install chromium --with-deps
+
+      - name: Run E2E tests
+        run: npm run test:e2e
+        env:
+          VITE_SUPABASE_URL: https://placeholder.supabase.co
+          VITE_SUPABASE_ANON_KEY: placeholder
+          VITE_GA4_ID: placeholder
+          VITE_CLARITY_ID: placeholder
+          CI: true
+
+      - name: Show first failed test artifacts
+        if: failure()
+        run: |
+          FIRST=$(find test-results -mindepth 1 -maxdepth 1 -type d 2>/dev/null | head -1)
+          if [ -n "$FIRST" ]; then
+            echo "=== Contents of $FIRST ==="
+            ls -la "$FIRST"
+            MD=$(find "$FIRST" -name "*.md" | head -1)
+            [ -n "$MD" ] && cat "$MD"
+          else
+            echo "No test-results directories found"
+          fi
+
+      - name: Upload test-results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results
+          path: test-results/
+          retention-days: 7
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 7

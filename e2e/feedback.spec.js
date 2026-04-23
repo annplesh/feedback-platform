@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { setupBaseMocks, setFakeSession } from "./helpers.js";
+import { setupBaseMocks, setFakeSession, waitForApp } from "./helpers.js";
 
 // ─── Тест 6: Успешная отправка отзыва ─────────────────────────────────────────
 
@@ -9,6 +9,7 @@ test("Успешная отправка отзыва", async ({ page }) => {
   await setupBaseMocks(page);
 
   await page.goto("/");
+  await waitForApp(page);
 
   // Переходим на страницу отправки отзыва
   await page.click('[data-testid="nav-submit"]');
@@ -40,6 +41,7 @@ test("Ошибка отправки формы — пустые обязател
   await setupBaseMocks(page);
 
   await page.goto("/");
+  await waitForApp(page);
 
   // Переходим на страницу отправки отзыва
   await page.click('[data-testid="nav-submit"]');

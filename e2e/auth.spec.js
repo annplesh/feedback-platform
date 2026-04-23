@@ -1,5 +1,5 @@
 import { test, expect } from "@playwright/test";
-import { setupBaseMocks, setFakeSession, FAKE_USER } from "./helpers.js";
+import { setupBaseMocks, setFakeSession, waitForApp, FAKE_USER } from "./helpers.js";
 
 // ─── Вспомогательные функции навигации ───────────────────────────────────────
 
@@ -32,6 +32,7 @@ test("Успешная регистрация", async ({ page }) => {
   });
 
   await page.goto("/");
+  await waitForApp(page);
   await goToRegisterPage(page);
 
   await page.fill('[data-testid="register-email"]', "newuser@example.com");
@@ -47,6 +48,7 @@ test("Успешная регистрация", async ({ page }) => {
 test("Ошибка регистрации — пустые и некорректные данные", async ({ page }) => {
   await setupBaseMocks(page);
   await page.goto("/");
+  await waitForApp(page);
   await goToRegisterPage(page);
 
   // Отправка с пустыми полями
@@ -95,6 +97,7 @@ test("Успешный вход", async ({ page }) => {
   });
 
   await page.goto("/");
+  await waitForApp(page);
   await goToLoginPage(page);
 
   await page.fill('[data-testid="login-email"]', "test@example.com");
@@ -125,6 +128,7 @@ test("Ошибка входа — неверный пароль", async ({ page 
   });
 
   await page.goto("/");
+  await waitForApp(page);
   await goToLoginPage(page);
 
   await page.fill('[data-testid="login-email"]', "test@example.com");
@@ -144,6 +148,7 @@ test("Ошибка входа — неверный пароль", async ({ page 
 test("Вход через Google (открытие OAuth)", async ({ page }) => {
   await setupBaseMocks(page);
   await page.goto("/");
+  await waitForApp(page);
   await goToLoginPage(page);
 
   let capturedOAuthUrl = "";
